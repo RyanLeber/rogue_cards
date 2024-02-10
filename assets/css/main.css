@@ -6,6 +6,7 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --clr-blue-600: #2563eb;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -24,4 +25,76 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+.button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 100vmax;
+  padding: 1.125em 2.5em;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-button);
+  line-height: 1;
+  color: white;
+  background-color: var(--clr-blue-600);;
+  box-shadow: 0 .5em 1em -1em;
+  text-decoration: none;
+  transition: color 0.5s ease;
+  transition: background-color 0.5s ease;
+}
+@media (max-width: 100vw) {
+  .button[data-type="solid"] {
+    background-color: var(--clr-text-100);
+    color: var(--clr-primary);
+  }
+  .button[data-type="solid-inverted"] {
+    background-color: var(--clr-primary);
+    color: var(--clr-text-100);
+  }
+  .button[data-type="submit"] {
+    padding: .75em 1.75em;
+    border: solid;
+    border-color: var(--clr-primary);
+    background-color: var(--clr-text-100);
+    color: var(--clr-text-400);
+    transition: color 0.5s ease;
+    transition: background-color 0.5s ease;
+  }
+  .button[data-type="header"] {
+    padding: .5rem 1.5rem;
+    border-radius: .75rem;
+    background-color: var(--clr-blue-600);
+    color: white;
+    box-shadow: none;
+    transition: color 0.5s ease;
+    transition: background-color 0.5s ease;
+  }
+  
+  .button[data-type="header"]:hover,
+  .button[data-type="header"]:focus-visible {
+    background-color: var(--clr-text-100);
+    color: var(--clr-primary);
+  }
+  .button:hover,
+  .button:focus-visible {
+    background-color: var(--clr-text-100);
+    color: var(--clr-text-200);
+  }
+  
+  .button[data-type="solid"]:hover,
+  .button[data-type="solid"]:focus-visible {
+    background-color: var(--clr-text-200);
+    color: var(--clr-text-100);
+  }
+  .button[data-type="solid-inverted"]:hover,
+  .button[data-type="solid-inverted"]:focus-visible {
+    background-color: var(--clr-text-100);
+    color: var(--clr-primary);
+  }
+  .button[data-type="submit"]:hover,
+  .button[data-type="submit"]:focus-visible {
+    background-color: var(--clr-text-200);
+    color: var(--clr-text-100);
+    border-color: var(--clr-text-100);
+  }
 }
