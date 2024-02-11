@@ -50,6 +50,8 @@ export default defineEventHandler(async (event) => {
 });
 
 
+
+// .env*.local, .env
 // export default defineEventHandler(async (event) => {
 //   const { username, password } = await readBody(event);
 //   const passwordHash = await bcrypt.hash(password, 10); // Hashing the password
