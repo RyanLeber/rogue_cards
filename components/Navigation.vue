@@ -11,7 +11,7 @@
         <li class="nav-item"><ButtonLink address="/profile">Profile</ButtonLink></li>
         <li class="nav-item"><ButtonLink address="/currentgame">Current Game</ButtonLink></li>
         <li class="nav-item"><ButtonLink address="/games">Games</ButtonLink></li>
-        <li class="nav-item"><ButtonLink address="#">Temp</ButtonLink></li>
+        <li class="nav-item"><ButtonLink address="/">Log Out</ButtonLink></li>
       </ul>
 
     </nav>

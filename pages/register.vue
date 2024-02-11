@@ -5,10 +5,8 @@
 </template>
 
 <script lang="ts" setup>
+definePageMeta({ layout: 'default' })
 import RegisterComp from '~/components/RegisterComp.vue';
-definePageMeta({
-  layout: 'default'
-})
 
 </script>
 

@@ -19,7 +19,7 @@
     </div>
 
     <div class="mt-8">
-      <Table />
+      <!-- <Table /> -->
     </div>
 
   </div>
