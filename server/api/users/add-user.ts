@@ -24,8 +24,6 @@
 import { createPool, db, sql } from '@vercel/postgres'
 import bcrypt from 'bcryptjs'
 
-// const  bcrypt = require('bcrypt')
-
 export default defineEventHandler(async (event) => {
   const { username, password } = await readBody(event);
   const passwordHash = await bcrypt.hash(password, 10); // Hashing the password

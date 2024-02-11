@@ -55,30 +55,30 @@ const form = reactive({
   repassword: '',
 })
 
-// const router = useRouter();
+const router = useRouter();
 
-// async function handleSubmit() {
-//   if (form.password === form.repassword) {
-//     // const user = useCookie<{ id: number }>('user')
-//     const { data, error } = await useFetch('/api/users/add-user', {
-//       method: 'post',
-//       body: {
-//         username: form.userName,
-//         password: form.password
-//       }
-//     })
-//     if ( error.value ) {
-//       console.log(error)
-//     }
-//     else {
-//       console.log(data.value)
-//       // router.push('/');
-//     }
-//   }
-//   else {
-//     console.log('passwords do not match')
-//   }
-// }
+async function handleSubmit() {
+  if (form.password === form.repassword) {
+    // const user = useCookie<{ id: number }>('user')
+    const { data, error } = await useFetch('/api/users/add-user', {
+      method: 'post',
+      body: {
+        username: form.userName,
+        password: form.password
+      }
+    })
+    if ( error.value ) {
+      console.log(error)
+    }
+    else {
+      console.log(data.value)
+      router.push('/');
+    }
+  }
+  else {
+    console.log('passwords do not match')
+  }
+}
 
 </script>
 
