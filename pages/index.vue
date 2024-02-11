@@ -1,6 +1,8 @@
 <template>
-  <LoginComp />
-  <ButtonLink isButton address="/profile">Go to Profile</ButtonLink>
+  <div>
+    <LoginComp />
+    <ButtonLink isButton address="/profile">Go to Profile</ButtonLink>
+  </div>
 </template>
 
 <script setup>

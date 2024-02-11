@@ -34,7 +34,7 @@
 
 
         <div>
-          <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+          <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign up</button>
         </div>
       </form>
 
@@ -55,19 +55,30 @@ const form = reactive({
   repassword: '',
 })
 
-async function handleSubmit() {
-  if (form.password === form.repassword) {
-    // const user = useCookie<{ id: number }>('user')
-    const { error } = await useFetch('/api/users/add-user', {
-      query: { form }
-    })
-    console.log(error)
-    if (error == null) {
-      navigateTo('/')
-    }
-  }
+// const router = useRouter();
 
-}
+// async function handleSubmit() {
+//   if (form.password === form.repassword) {
+//     // const user = useCookie<{ id: number }>('user')
+//     const { data, error } = await useFetch('/api/users/add-user', {
+//       method: 'post',
+//       body: {
+//         username: form.userName,
+//         password: form.password
+//       }
+//     })
+//     if ( error.value ) {
+//       console.log(error)
+//     }
+//     else {
+//       console.log(data.value)
+//       // router.push('/');
+//     }
+//   }
+//   else {
+//     console.log('passwords do not match')
+//   }
+// }
 
 </script>
 
