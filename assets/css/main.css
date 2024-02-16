@@ -7,6 +7,30 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
   --clr-blue-600: #2563eb;
+
+  --clr-cyan-50: #ecfeff;
+  --clr-cyan-100: #cffafe;
+  --clr-cyan-200: #a5f3fc;
+  --clr-cyan-300: #67e8f9;
+  --clr-cyan-400: #22d3ee;
+  --clr-cyan-500: #06b6d4;
+  --clr-cyan-600: #0891b2;
+  --clr-cyan-700: #0e7490;
+  --clr-cyan-800: #155e75;
+  --clr-cyan-900: #164e63;
+  --clr-cyan-950: #083344;
+
+  --clr-slate-50: #f8fafc;
+  --clr-slate-100: #f1f5f9;
+  --clr-slate-200: #e2e8f0;
+  --clr-slate-300: #cbd5e1;
+  --clr-slate-400: #94a3b8;
+  --clr-slate-500: #64748b;
+  --clr-slate-600: #475569;
+  --clr-slate-700: #334155;
+  --clr-slate-800: #1e293b;
+  --clr-slate-900: #0f172a;
+  --clr-slate-950: #020617;
 }
 
 @media (prefers-color-scheme: dark) {

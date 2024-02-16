@@ -6,7 +6,8 @@ async function seed() {
       gameId SERIAL PRIMARY KEY,
       gamename VARCHAR(255) UNIQUE NOT NULL,
       players INT []
-      "createdAt" TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      createdAt TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      expiresAt TIMESTAMP WITH TIME ZONE NOT NULL,
     );
     `
 

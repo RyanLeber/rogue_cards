@@ -5,7 +5,9 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({ layout: 'user' })
+definePageMeta({
+  layout: 'user',
+})
 
 </script>
 

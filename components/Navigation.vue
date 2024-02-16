@@ -11,7 +11,7 @@
         <li class="nav-item"><ButtonLink address="/profile">Profile</ButtonLink></li>
         <li class="nav-item"><ButtonLink address="/currentgame">Current Game</ButtonLink></li>
         <li class="nav-item"><ButtonLink address="/games">Games</ButtonLink></li>
-        <li class="nav-item"><ButtonLink address="/">Log Out</ButtonLink></li>
+        <li class="nav-item"><button @click="logOut">Log Out</button></li>
       </ul>
 
     </nav>
@@ -27,6 +27,18 @@ const menuActive = ref(false);
 const menu = ref(null);
 const menuButton = ref(null);
 
+const router = useRouter()
+
+async function logOut() {
+  const { error } = await useFetch('/api/users/log-out', {
+    method: 'POST'
+  })
+  if (error.value) {
+    console.log(error)
+  } else {
+    router.push('/')
+  }
+}
 // Handle outside clicks
 const handleClickOutside = (event) => {
   if (menuActive.value &&
