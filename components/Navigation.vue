@@ -7,12 +7,10 @@
 
     <nav ref="menu" class="primary-navigation" :class="{ 'is-active': menuActive }">
 
-      <ul role="list" class="nav-list" @click="closeMenu" id="primary-navigation">
-        <li class="nav-item"><ButtonLink address="/profile">Profile</ButtonLink></li>
-        <li class="nav-item"><ButtonLink address="/currentgame">Current Game</ButtonLink></li>
-        <li class="nav-item"><ButtonLink address="/games">Games</ButtonLink></li>
-        <li class="nav-item"><button @click="logOut">Log Out</button></li>
+      <ul role="list" class="nav-list" @click="closeMenu" id="primary-navigation" v-for="navItem of nav">
+        <li class="nav-item"><button @click="navItem.onClick">{{ navItem.label }}</button></li>
       </ul>
+      <li class="nav-item"><button @click="logOut">Log Out</button></li>
 
     </nav>
 
@@ -20,14 +18,22 @@
 </template>
 
 <script setup>
-import ButtonLink from '~/components/ButtonLink.vue'
 import { ref, onMounted, onUnmounted } from 'vue';
 
 const menuActive = ref(false);
 const menu = ref(null);
 const menuButton = ref(null);
 
+const routeState = useState('gamename')
+
 const router = useRouter()
+const route = useRoute()
+
+const nav = reactive([
+  {label: "Profile", onClick: () => router.push(`/user-${route.params.username}/profile`)},
+  {label: "Games", onClick: () => router.push(`/user-${route.params.username}/games`)},
+  {label: "Current Game", onClick: () => router.push(`/user-${route.params.username}/current-game-${routeState.value? routeState.value : 'no-game-session'}`)},
+])
 
 async function logOut() {
   const { error } = await useFetch('/api/users/log-out', {
@@ -50,6 +56,8 @@ const handleClickOutside = (event) => {
 };
 const toggleMenu = () => {
   menuActive.value = !menuActive.value;
+
+  console.log(routeState.value)
 };
 const closeMenu = () => {
   if ( menuActive.value ) {
