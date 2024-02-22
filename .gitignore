@@ -11,3 +11,5 @@ dist
 .turbo
 *.tsbuildinfo
 
+tmp
+assets/icon
