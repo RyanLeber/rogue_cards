@@ -11,7 +11,11 @@ module.exports = {
     './app.vue',
   ],
   theme: {
-    extend: {},
+    extend: {
+    },
+    fontFamily: {
+      'sans': ['Roboto', 'sans-serif'],
+    },
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
