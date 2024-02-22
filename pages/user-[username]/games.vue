@@ -6,37 +6,38 @@
         <div>
           <label for="gameName" class="block text-sm font-medium leading-6 text-gray-900">Game Name</label>
           <div class="mt-2">
-            <input :value="gameName" type="text" required 
-              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            <input v-model="gameName.v" type="text" required 
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-1"
             />
           </div>
         </div>
 
         <div>
-          <button type="submit" 
-          class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >Create New Game</button>
+          <AmberButton :type="submit" class="w-full" >Create New Game</AmberButton>
         </div>
 
-        </form>
+      </form>
+
       <div v-if="gameToken.show" class="my-8 w-full h-20 flex items-center justify-center bg-slate-100 text-black">
         <span class="text-3xl font-bold"> {{ gameToken.token }} </span>
       </div>
     </div>
 
-    <div class="my-8">
-      <GamesTable :games="gamesArray.games" />
-    </div>
-    <button @click="getGames" class="button">Get Games</button>
+    <GamesTable :games="gamesArray.games" />
+
+    <AmberButton @click="getGames">Get Games</AmberButton>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import AmberButton from '~/components/AmberButton.vue';
+import { reactive } from 'vue'
 import GamesTable from '~/components/GamesTable.vue'
 definePageMeta({ layout: 'user' })
 
-const gameName = ref()
+const gameName = reactive({
+  v: ''
+})
 const gameToken = reactive({
   show: false,
   token: 0
@@ -47,8 +48,8 @@ const gamesArray = reactive({
 })
 
 async function createGame() {
-  const name = gameName.value
-  if (gameName.value) {
+  const name = gameName.v
+  if (gameName.v.length > 0) {
     const { data, error } = await useFetch('/api/games/create-game', {
       method: 'post',
       body: {
@@ -56,12 +57,12 @@ async function createGame() {
       }
     });
     if ( error.value ) {
-      console.log(error);
+      console.log(error.value);
     }
     else if ( data ) {
       gameToken.show = true;
       gameToken.token = data.value.gameToken;
-      gameName.value = null
+      gameName.v = ''
       getGames()
     }
   }
@@ -75,6 +76,10 @@ async function getGames() {
     gamesArray.games = data.value.games
   }
 }
+
+watch(gameName.v, () => {
+  console.log(gameName.v)
+})
 
 onNuxtReady(() => {
   getGames()
