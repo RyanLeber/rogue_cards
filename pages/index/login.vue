@@ -49,6 +49,7 @@ const form = reactive({
 
 const router = useRouter();
 
+
 async function handleSubmit() {
   const { data, error } = await useFetch('/api/users/get-user', {
     method: 'post',
@@ -60,9 +61,10 @@ async function handleSubmit() {
   if ( error.value ) {
     console.log(error)
   }
-  else {
+  else if (data.value) {
     console.log(data.value)
-    router.push('/profile');
+    router.push(`/user-${form.userName}/profile`);
+
   }
 }
 </script>
