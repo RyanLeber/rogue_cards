@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="flex flex-col items-center my-4">
     <div v-for="(counter, idx) in counters" :key="idx">
       <div>
         <input
@@ -35,23 +35,13 @@
 
       </div>
     </div>
-    <div class="flex">
-      <DefaultButton @click="removeCounter"
-        color="bg-amber-600" 
-        hover-color="bg-amber-500"
-        outline-color="outline-amber-500"
-        class="my-8 mx-4"
-      >
-        Remove Counter
-      </DefaultButton>
-      <DefaultButton @click="addCounter"
-        color="bg-amber-600" 
-        hover-color="bg-amber-500"
-        outline-color="outline-amber-500"
-        class="my-8 mx-4"
-      >
+    <div class="inline-flex">
+      <AmberButton @click="removeCounter" class="my-8 mx-4 w-32">
+        Del Counter
+      </AmberButton>
+      <AmberButton @click="addCounter" class="w-1/2 my-8 mx-4">
         Add Counter
-      </DefaultButton>
+      </AmberButton>
     </div>
   </div>
 </template>
@@ -59,9 +49,13 @@
 <script setup>
 import { reactive } from 'vue'
 
+
+
 const counters = reactive([
   { value: 0, name: 'Counter 1', canEdit: false },
 ]);
+
+// const CounterState = useState('counters', counters)
 
 const addCounter = () => {
   counters.push({ value: 0, name: `Counter ${counters.length + 1}`, canEdit: false });

@@ -1,104 +1,107 @@
 <template>
-  <div class="w-11/12">
+  <div class="w-11/12 flex flex-col items-center">
 
-    <DefaultButton @click="toggleDropDown('dropOne')"
-      color="bg-amber-600" 
-      hover-color="bg-amber-500"
-      outline-color="outline-amber-500"
-      class=" w-full my-1"
-    >
+    <AmberButton @click="toggleDropDown('dropOne')"
+      class="lg:w-1/2 w-full my-1">
       Relics
-    </DefaultButton>
+    </AmberButton>
     <transition name="extend">
-      <div class="drop-down-content " v-show="isActive.dropOne">
-        <div class="w-fit h-fit bg-slate-300 text-slate-800 p-8 rounded-2xl">
-          <div class="max-w-full overflow-x-auto">
-            <table class="table-fixed w-full">
-              <thead>
-                <tr class="text-left border-b-2 border-slate-500">
-                  <th class="w-6 ">#</th>
-                  <th class="w-14 ">Relic Name</th>
-                  <th class="w-96 ">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(relic, index) in relics" :key="index" @click="test">
-                  <td >{{ index + 1 }}</td>
-                  <td >{{ relic.relic_name }}</td>
-                  <td >{{ relic.relic_description }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          
+      <div v-show="isActive.dropOne" 
+        class=" drop
+        flex justify-center
+        lg:w-1/2 w-full h-fit 
+        bg-slate-300 text-slate-800 p-4 rounded-2xl"
+      >
+        <div class="w-fit overflow-x-scroll">
+          <table class="table-fixed w-max">
+            <thead>
+              <tr class="text-left border-b-2 border-slate-500">
+                <th class="w-36 ">Relic Name</th>
+                <th class="">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(relic, index) in relics" :key="index" @click="test">
+                <td class="pl-2 ">{{ relic.relic_name }}</td>
+                <td class="pr-2">{{ relic.relic_description }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        
       </div>
     </transition>
 
 
-    <DefaultButton @click="toggleDropDown('dropTwo')"
-      color="bg-amber-600" 
-      hover-color="bg-amber-500"
-      outline-color="outline-amber-500"
-      class=" w-full my-1"
-    >
-      Trump Cards
-    </DefaultButton>
+    <AmberButton @click="toggleDropDown('dropTwo')"
+      class=" lg:w-1/2 w-full my-1">Trump Cards</AmberButton>
     <transition name="extend">
-      <div class="drop-down-content " v-show="isActive.dropTwo">
-        <div class="w-fit h-fit bg-slate-300 text-slate-800 p-8 rounded-2xl">
-          <div class="max-w-full overflow-x-auto">
-            <table class="table-fixed w-full">
-              <thead>
-                <tr class="text-left border-b-2 border-slate-500">
-                  <th class="w-6 ">#</th>
-                  <th class="w-6 ">Energy</th>
-                  <th class="w-14 ">Trump Name</th>
-                  <th class="w-96 ">Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(trump, index) in trumps" :key="index" @click="test">
-                  <td >{{ index + 1 }}</td>
-                  <td >{{ trump.energy }}</td>
-                  <td >{{ trump.trump_name }}</td>
-                  <td >{{ trump.trump_description }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          
-        </div>
+      <div v-show="isActive.dropTwo" 
+        class="drop
+        flex justify-center
+        lg:w-1/2 w-full h-fit 
+        bg-slate-300 text-slate-800 p-4 rounded-2xl"
+      >
+
+      <div class="w-fit overflow-x-scroll">
+        <table class="table-fixed w-max">
+          <thead>
+            <tr class="text-left border-b-2 border-slate-500">
+              <th class="w-6 pl-0 pr-4">Energy</th>
+              <th class="w-32 ">Trump Name</th>
+              <th class="">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(trump, index) in trumps" :key="index" @click="test">
+              <td class="pl-2">{{ trump.energy }}</td>
+              <td class="">{{ trump.trump_name }}</td>
+              <td class="pr-2">{{ trump.trump_description }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
       </div>
     </transition>
 
-    <DefaultButton @click="toggleDropDown('dropThree')"
-      color="bg-amber-600" 
-      hover-color="bg-amber-500"
-      outline-color="outline-amber-500"
-      class=" w-full my-1"
+
+    <AmberButton @click="toggleDropDown('dropThree')"
+      class="lg:w-1/2 w-full my-1"
     >
       Potions
-    </DefaultButton>
+    </AmberButton>
     <transition name="extend">
-      <div class="drop-down-content " v-show="isActive.dropThree">
+      <div v-show="isActive.dropThree" 
+        class="drop
+        flex justify-center
+        lg:w-1/2 w-full h-fit 
+        bg-slate-300 text-slate-800 p-4 rounded-2xl"
+      >
+
+        <div class="w-fit overflow-x-scroll">
+          <table class="table-fixed w-max">
+            <thead>
+              <tr class="text-left border-b-2 border-slate-500">
+                <th class="w-32 ">Potion Name</th>
+                <th class="">Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(potion, index) in potions" :key="index" @click="test">
+                <td class="pl-2">{{ potion.potion_name }}</td>
+                <td class="pr-2">{{ potion.potion_description }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
       </div>
     </transition>
-    <DefaultButton @click="getRelics"
-      color="bg-amber-600" 
-      hover-color="bg-amber-500"
-      outline-color="outline-amber-500"
-    >
-      Get Relics
-    </DefaultButton>
-    <DefaultButton @click="getTrumps"
-      color="bg-amber-600" 
-      hover-color="bg-amber-500"
-      outline-color="outline-amber-500"
-    >
-      Get Trumps
-    </DefaultButton>
+
+    <AmberButton class="my-2" @click="getRelics">Get Relics</AmberButton>
+    <AmberButton class="my-2" @click="getTrumps">Get Trumps</AmberButton>
+    <AmberButton class="my-2" @click="getPotions">Get Potions</AmberButton>
 
   </div>
 </template>
@@ -107,7 +110,7 @@
 import { reactive } from 'vue';
 
 const isActive = reactive({
-  dropOne: true,
+  dropOne: false,
   dropTwo: false,
   dropThree: false
 });
@@ -116,13 +119,13 @@ function toggleDropDown(dropKey) {
 }
 const relics = reactive([])
 const trumps = reactive([])
-const heroClass = reactive()
+const potions = reactive([])
 
 async function getRelics () {
   const { data, error } = await useFetch('/api/current-game/get-relics', {
     method: 'POST',
     body: {
-      relicIds : [1,7,11]
+      relicIds : [1,7,11,18]
     }
   })
   if (error.value) {
@@ -139,7 +142,7 @@ async function getTrumps () {
   const { data, error } = await useFetch('/api/current-game/get-trumps', {
     method: 'POST',
     body: {
-      trumpIds : [1,7,11]
+      trumpIds : [1,7,11,17]
     }
   })
   if (error.value) {
@@ -152,28 +155,33 @@ async function getTrumps () {
   }
   console.log(trumps)
 }
+async function getPotions () {
+  const { data, error } = await useFetch('/api/current-game/get-potions', {
+    method: 'POST',
+    body: {
+      potionIds : [1,3]
+    }
+  })
+  if (error.value) {
+    console.log(error.value)
+  } else {
+    console.log(data.value.potions)
+    data.value.potions.forEach(potion => {
+        potions.push(potion);
+    });
+  }
+  console.log(potions)
+}
 
 </script>
 
 <style scoped>
 
-.bi {
-  position: absolute;
-  left: 0;
-  margin-left: 1em;
+.drop {
+  transform-origin: top;
+  transition: transform .4s ease-in-out;
 }
-.drop-down-content {
-  max-height: fit-content;
-  overflow: hidden;
-}
-.extend-enter-active {
-  animation: extend .7s ease-out;
-}
-.extend-leave-active {
-  animation: extend .4s reverse;
-}
-@keyframes extend {
-  0% { max-height: 0 }
-  100% { max-height: 750px }
+.extend-enter-from, .extend-leave-to{
+  transform: scaleY(0);
 }
 </style>
