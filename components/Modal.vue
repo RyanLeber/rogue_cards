@@ -11,7 +11,7 @@
          :class="[padding]"
          role="dialog"
          aria-modal="true">
-        <slot @click.stop/>
+        <slot @click.stop />
     </div>
   </div>
 </template>
