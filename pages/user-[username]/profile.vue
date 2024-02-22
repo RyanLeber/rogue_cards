@@ -8,6 +8,8 @@
 definePageMeta({
   layout: 'user',
 })
+const route = useRoute()
+console.log(route.params.username)
 
 </script>
 
