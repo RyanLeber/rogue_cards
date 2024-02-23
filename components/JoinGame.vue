@@ -36,11 +36,7 @@ import { ref, reactive } from 'vue';
 const router = useRouter()
 const route = useRoute()
 
-
-// 83517631
-
 const routeState = useState("gamename")
-
 
 const modalActive = ref(false);
 const form = reactive({
@@ -59,6 +55,7 @@ async function joinGame() {
     console.log("Error: ", error.value);
   } else if ( data.value ) {
     console.log(data.value)
+    localStorage.setItem('gametoken', gameCode)
     routeState.value = data.value
     router.push(`/user-${route.params.username}/current-game-${routeState.value}`)
     closeModal()

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="index h-screen">
     <MainHeader />
     <div class="flex justify-center">
       <NuxtLink to="/"> 
@@ -17,6 +17,14 @@ import MainHeader from '~/components/MainHeader.vue';
 
 </script>
 
-<style>
+<style scoped>
+.index {
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(0,0,0)
+    )
+    rgb(0,0,0);
+}
 
 </style>

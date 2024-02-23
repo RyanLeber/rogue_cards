@@ -50,12 +50,20 @@
 import { reactive } from 'vue'
 
 
-
 const counters = reactive([
   { value: 0, name: 'Counter 1', canEdit: false },
 ]);
 
 // const CounterState = useState('counters', counters)
+// localStorage.setItem('counterData', JSON.stringify())
+
+
+watch(counters, (newCounters) => {
+  // Ensure this runs only on client-side
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('counters', JSON.stringify(newCounters));
+  }
+}, { deep: true });
 
 const addCounter = () => {
   counters.push({ value: 0, name: `Counter ${counters.length + 1}`, canEdit: false });
@@ -64,6 +72,26 @@ const addCounter = () => {
 const removeCounter = () => {
   counters.pop();
 }
+
+// onMounted(() => {
+//   const savedCounters = localStorage.getItem('counters');
+//   if (savedCounters) {
+//     const parsedCounters = JSON.parse(savedCounters);
+//     parsedCounters.forEach((counter, index) => {
+//       counters[index] = counter;
+//     });
+//   }
+// });
+
+onMounted(() => {
+  const savedCounters = localStorage.getItem('counters');
+  if (savedCounters) {
+    const parsedCounters = JSON.parse(savedCounters);
+    // Make sure to replace the counters array content correctly.
+    counters.splice(0, counters.length, ...parsedCounters);
+  }
+});
+
 </script>
 
 <style>

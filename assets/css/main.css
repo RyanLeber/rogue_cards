@@ -4,8 +4,8 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+
+
   --clr-blue-600: #2563eb;
 
   --clr-cyan-50: #ecfeff;
@@ -31,13 +31,29 @@
   --clr-slate-800: #1e293b;
   --clr-slate-900: #0f172a;
   --clr-slate-950: #020617;
+
+  --clr-amber-50: #fffbeb;
+  --clr-amber-100: #fef3c7;
+  --clr-amber-200: #fef08a;
+  --clr-amber-300: #fde047;
+  --clr-amber-400: #facc15;
+  --clr-amber-500: #eab308;
+  --clr-amber-600: #ca8a04;
+  --clr-amber-700: #a16207;
+  --clr-amber-800: #854d0e;
+  --clr-amber-900: #713f12;
+  --clr-amber-950: #422006;
+
+  --background-start-rgb: var(--clr-slate-400);
+  --background-end-rgb: var(--clr-slate-400);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+
+    --background-start-rgb: var(--clr-slate-400);
+    --background-end-rgb: var(--clr-slate-400);
   }
 }
 
@@ -46,9 +62,9 @@ body {
   background: linear-gradient(
       to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
+      var(--background-end-rgb)
     )
-    rgb(var(--background-start-rgb));
+    var(--background-start-rgb);
 }
 
 .button {

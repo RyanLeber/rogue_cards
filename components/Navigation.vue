@@ -20,6 +20,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 
+import {  } from 'nuxt/app';
+
 const menuActive = ref(false);
 const menu = ref(null);
 const menuButton = ref(null);
@@ -42,6 +44,7 @@ async function logOut() {
   if (error.value) {
     console.log(error)
   } else {
+    localStorage.clear()
     router.push('/')
   }
 }
@@ -57,7 +60,7 @@ const handleClickOutside = (event) => {
 const toggleMenu = () => {
   menuActive.value = !menuActive.value;
 
-  console.log(routeState.value)
+  console.log("routerstate, gamename:",routeState.value)
 };
 const closeMenu = () => {
   if ( menuActive.value ) {

@@ -12,3 +12,4 @@ import ButtonLink from '~/components/ButtonLink.vue';
 // import { router } from 'vue'
 definePageMeta({ layout: 'default' })
 </script>
+

@@ -1,8 +1,14 @@
 <template>
   <div class="flex flex-col items-center">
-    <AmberButton @click="toggleDrop" class="w-48">
+    <AmberButton v-if="selection.classSelected" @click="toggleDrop" class="w-48">
       Class Info
     </AmberButton>
+    <AmberButton v-else @click="selectClass">
+      Select Class
+    </AmberButton>
+
+    <ClassSelection :isActive="selection.isActive" :classes="selection.classes" @class-selected="setClass"/>
+
     <Transition name="extend">
 
       <div v-if="isDrop" class="drop my-4 w-11/12 h-fit bg-slate-500 p-4 rounded-lg
@@ -16,7 +22,6 @@
         <br>
         <div class="text-xl font font-medium"> 
           <h2 class="font-bold">Starting Relic:</h2>
-          <!-- <h3>{{ heroClass.relic.name }}:</h3> -->
           <P>
             {{ heroClass.relic.name }}:
             {{ heroClass.relic.desc }}
@@ -37,12 +42,17 @@
 </template>
 
 <script setup>
-import DefaultButton from './DefaultButton.vue';
 import { ref, reactive } from 'vue'
 
 const isDrop = ref(false)
+const selection = reactive({
+  classes: [],
+  classSelected: false,
+  isActive: false
+})
+
 const heroClass = reactive({
-  name: 'none', // You can initialize with empty values or a basic structure
+  name: 'none',
   energy: 0,
   health: 0,
   draw: 0,
@@ -51,27 +61,71 @@ const heroClass = reactive({
   trump: { name: '', energy: 0, desc: '' }
 })
 
+const classState = useState('class')
+
 function toggleDrop() {
   if (heroClass.name === 'none') getClass()
   isDrop.value = !isDrop.value
 }
 
+async function getClass (id) {
+  if (heroClass.name === 'none') {
+    const { data, error } = await useFetch('/api/current-game/get-class', {
+      method: 'POST',
+      body: {
+        gameToken: localStorage.getItem('gametoken')
+      }
+    })
+    if (error.value) {
+      console.log(error.value)
+      selection.classSelected = false
+    } else {
+      console.log(data.value)
+      Object.assign(heroClass, data.value)
+      selection.classSelected = true
+    }
+  }
+}
 
-async function getClass () {
-  const { data, error } = await useFetch('/api/current-game/get-class', {
+async function selectClass () {
+  let classes = []
+  const { data, error } = await useFetch('/api/current-game/select-class', {
+  })
+  if (error.value) {
+    console.log(error.value)
+  } else {
+    data.value.forEach((hero) => {
+      classes.push(hero)
+    });
+    setSelectionData(classes)
+  }
+}
+
+const setSelectionData = (arr) => {
+  selection.classSelected = true;
+  selection.isActive = true;
+  selection.classes = arr
+}
+
+async function setClass(classId) {
+  const { error } = await useFetch('/api/current-game/set-class', {
     method: 'POST',
     body: {
-      classId : 17
+      classId : classId,
+      gameToken: localStorage.getItem('gametoken')
     }
   })
   if (error.value) {
     console.log(error.value)
   } else {
-    console.log(data.value.class)
-    Object.assign(heroClass, data.value.class)
+    selection.classSelected = true;
+    selection.isActive = false;
   }
-  console.log(relics)
 }
+onBeforeMount(() => {
+  getClass()
+})
+
 </script>
 
 <style>

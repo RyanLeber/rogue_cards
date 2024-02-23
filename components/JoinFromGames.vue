@@ -51,6 +51,9 @@ async function joinGame() {
     console.log("Error: ", error.value);
   } else if ( data.value ) {
     console.log(data.value)
+
+    localStorage.setItem('gametoken', gameCode)
+
     router.push(`/user-${route.params.username}/current-game-${data.value}`)
     closeModal()
   }

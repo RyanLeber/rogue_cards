@@ -1,6 +1,6 @@
  
 <template>
-  <button :type="type | 'button'"
+  <button :type="type || 'button'"
     class="
       flex w-fit justify-center rounded-md
       px-3 py-1.5 text-sm font-semibold 
@@ -19,5 +19,4 @@
 defineProps({
   type: String
 })
-
 </script>

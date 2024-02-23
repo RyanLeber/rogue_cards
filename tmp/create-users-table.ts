@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS user_games (
   UNIQUE(user_id, game_id)
 );
 `
+// Need to update schema
 const createTable5 = await sql`
 CREATE TABLE IF NOT EXISTS game_session (
   game_session_id SERIAL PRIMARY KEY,
@@ -58,6 +59,7 @@ CREATE TABLE IF NOT EXISTS game_session (
   players INT[],
   current_player INT,
   rounds INT,
+  remaining_players INT[],
   expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (game_id) REFERENCES games(game_id)
@@ -184,7 +186,7 @@ const trumps = [
   { energy : 0, name: "Gut reaction", desc : "play the top card in draw pile"},
   { energy : 3, name: "Armegeddon", desc : "kill all units"},
   { energy : 0, name: "Tactical suicide", desc : "set your player hp to 0, get 2 upgrades after battle"},
-  { energy : 2, name: "Cursed strength: add 2 curse into discard pile strength equals = # of curse in deck while cursed strength is active"},
+  { energy : 2, name: "Cursed strength", desc: "add 2 curse into discard pile strength equals = # of curse in deck while cursed strength is active"},
   { energy : 2, name: "Cursed heal", desc : "add 2 curse into discard pile strength equals = # of curse in deck while cursed heal is active"},
   { energy : 2, name: "Cursed hero", desc : "add 2 curse, get 2 extra hero hp for each curse while cursed hero is active"},
   { energy : 2, name: "Resourceful", desc : "retain all cards"},
@@ -375,7 +377,7 @@ const classes = [
     health: 20,
     energy: 1,
     draw: 3,
-    cards: "2,4,6. 1 Ace",
+    cards: "All 2,4,6. 1 Ace",
     relic: {name: "True Shot", desc: "If you attack the foe whom you attacked last, +1 dmg. (Boss) +2 dmg"},
     trump: {energy: 0, name: "Crippling Shot", desc: "Next attack causes opponent to lose 4 Strength"}
   },
@@ -384,7 +386,7 @@ const classes = [
     health: 20,
     energy: 1,
     draw: 3,
-    cards: "2,4,6. 1 Ace",
+    cards: "All 2,4,6. 1 Ace",
     relic: {name: "Flight", desc: "Player Rolls a dice, if its a 1 or 3; dmg taken is halved and roll again. If a 1 is rolled no dmg is taken. (Boss) If the first rolls is a 1, no dmg is taken"},
     trump: {energy: 0, name: "Screech", desc: "Disable an opponents next trump card. Opponent must play a trump card to remove debuff, disabled trump card will not exhaust."}
   },
