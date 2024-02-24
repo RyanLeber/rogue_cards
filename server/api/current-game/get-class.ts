@@ -16,7 +16,8 @@ export default defineEventHandler(async (event) => {
     
     const userSession = sessionRows[0];
 
-    const { rows: gameRows } = await client.sql`SELECT * FROM games WHERE game_token = ${gameToken}`;
+    const { rows: gameRows, rowCount: gameCount } = await client.sql`SELECT * FROM games WHERE game_token = ${gameToken}`;
+    if ( gameCount == 0 ) return new Error('No game token')
 
     const {rows: userGamesRows} = await client.sql`SELECT * FROM user_games WHERE game_id= ${parseInt(gameRows[0].game_id, 10)} AND user_id= ${parseInt(userSession.user_id, 10)}`;
     if (!userGamesRows[0].class_id) return new Error('class not set')

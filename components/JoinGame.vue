@@ -1,9 +1,8 @@
 <template>
-    <div v-if="modalActive"
-      
+    <div 
       class="
         flex items-center justify-center
-        fixed z-40 left-0 top-14
+        absolute z-40 left-0 top-14
         h-full w-full 
         overflow-auto bg-black/40
         "
@@ -21,8 +20,8 @@
         <h1 class="font-bold text-4xl"> Join Game </h1>
         <h2 class="text-xl text-center">Enter a game code to join a game or create a game from the games page.</h2>
         <form @submit.prevent="joinGame" class="flex py-4">
-          <input v-model="form.gameCode" type="text" required class="rounded-l-md pl-1" placeholder="Game Code">
-          <AmberButton class="rounded-l-none">Join</AmberButton>
+          <input v-model="form.token" type="text" required class="rounded-l-md pl-1" placeholder="Game Code">
+          <button class="btn-amber rounded-l-none">Join</button>
         </form>
 
       </div>
@@ -31,54 +30,36 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
-
 const router = useRouter()
 const route = useRoute()
 
-const routeState = useState("gamename")
-
-const modalActive = ref(false);
 const form = reactive({
-  gameCode: ""
+  token: ""
 });
 
-async function joinGame() {
-  const gameCode = form.gameCode
-  const { data, error } = await useFetch('/api/current-game/join-game', {
-    method: 'POST',
-    body: {
-      gameToken: gameCode
+const gameStore = useGameStore()
+const { setName, setToken } = gameStore
+const { gameName } = storeToRefs(gameStore)
+
+const joinGame = async () => {
+  try {
+    const response = await $fetch('/api/testing/join-test', {
+      method: 'POST',
+      body: {
+        gameToken: Number(form.token),
+      },
+    });
+
+    if (!response) {
+      throw new Error('Failed to join the game.');
     }
-  });
-  if ( error.value ){
-    console.log("Error: ", error.value);
-  } else if ( data.value ) {
-    console.log(data.value)
-    localStorage.setItem('gametoken', gameCode)
-    routeState.value = data.value
-    router.push(`/user-${route.params.username}/current-game-${routeState.value}`)
-    closeModal()
+    setName(response);
+    setToken(Number(form.token));
+
+    // Redirect to the game's interface page
+    router.push(`/user-${route.params.username}/${gameName.value}`);
+  } catch (error) {
+    console.error(error);
   }
 }
-
-const openModal = () => {
-  modalActive.value = true;
-};
-
-const closeModal = () => {
-  modalActive.value = false;
-};
-onBeforeMount(() => {
-  if (route.params.gamename === 'no-game-session') {
-    modalActive.value = true
-  } else {
-    routeState.value = route.params.gamename
-  }
-})
-
 </script>
-
-<style>
-
-</style>

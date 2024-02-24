@@ -1,7 +1,5 @@
 <template>
-  <div v-if="modalActive"
-    
-    class="
+  <div class="
       flex items-center justify-center
       absolute z-40 left-0 top-14
       h-max w-full 
@@ -49,7 +47,7 @@
             {{ heroClass.trump.desc }}
           </P>
         </div>
-        <AmberButton @click="closeModal(heroClass.class_id)"
+        <AmberButton @click="$emit('classSelected',heroClass.class_id)"
           class="relative left-1/3 my-2"
         >Select This Class</AmberButton>
       </div>
@@ -59,30 +57,8 @@
 </template>
 
 <script setup>
-const modalActive = ref(false)
-
-const emit = defineEmits({
-  classSelected() {
-  }
-})
 
 const props = defineProps({
   classes: Array,
-  isActive: Boolean
 });
-
-watch(() => props.isActive, () => {
-  if ( props.isActive ) openModal();
-  console.log("should be active")
-});
-
-const openModal = () => {
-  modalActive.value = true;
-};
-
-const closeModal = (id) => {
-  emit('classSelected', id)
-  modalActive.value = false;
-};
-
 </script>

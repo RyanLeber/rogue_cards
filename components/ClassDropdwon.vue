@@ -7,7 +7,7 @@
       Select Class
     </AmberButton>
 
-    <ClassSelection :isActive="selection.isActive" :classes="selection.classes" @class-selected="setClass"/>
+    <ClassSelection v-if="selection.isActive" :classes="selection.classes" @class-selected="setClass"/>
 
     <Transition name="extend">
 
@@ -44,6 +44,10 @@
 <script setup>
 import { ref, reactive } from 'vue'
 
+const gameStore = useGameStore()
+const { isNameSet } = gameStore
+const { gameToken } = storeToRefs(gameStore)
+
 const isDrop = ref(false)
 const selection = reactive({
   classes: [],
@@ -61,31 +65,29 @@ const heroClass = reactive({
   trump: { name: '', energy: 0, desc: '' }
 })
 
-const classState = useState('class')
-
 function toggleDrop() {
-  if (heroClass.name === 'none') getClass()
+  if (heroClass.name === 'none') classRefresh()
   isDrop.value = !isDrop.value
 }
 
-async function getClass (id) {
-  if (heroClass.name === 'none') {
-    const { data, error } = await useFetch('/api/current-game/get-class', {
-      method: 'POST',
-      body: {
-        gameToken: localStorage.getItem('gametoken')
-      }
-    })
-    if (error.value) {
-      console.log(error.value)
-      selection.classSelected = false
-    } else {
-      console.log(data.value)
-      Object.assign(heroClass, data.value)
-      selection.classSelected = true
+// async function getClass () {
+//   if (heroClass.name === 'none') {
+  const { data: classData, error: classError, refresh: classRefresh } = await useFetch('/api/current-game/get-class', {
+    method: 'POST',
+    body: {
+      gameToken: gameToken.value
     }
+  })
+  if (classError.value) {
+    console.log(classError.value)
+    selection.classSelected = false
+  } else if (classData.value) {
+    console.log(classData.value)
+    Object.assign(heroClass, classData.value)
+    selection.classSelected = true
   }
-}
+//   }
+// }
 
 async function selectClass () {
   let classes = []
@@ -112,7 +114,7 @@ async function setClass(classId) {
     method: 'POST',
     body: {
       classId : classId,
-      gameToken: localStorage.getItem('gametoken')
+      gameToken: gameToken.value
     }
   })
   if (error.value) {
@@ -120,11 +122,9 @@ async function setClass(classId) {
   } else {
     selection.classSelected = true;
     selection.isActive = false;
+    classRefresh()
   }
 }
-onBeforeMount(() => {
-  getClass()
-})
 
 </script>
 

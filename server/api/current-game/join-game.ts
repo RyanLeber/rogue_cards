@@ -31,7 +31,9 @@ export default defineEventHandler(async (event) => {
       await client.sql`INSERT INTO user_games (game_id, user_id, expires_at) VALUES (${parseInt(game.game_id, 10)}, ${parseInt(userSession.user_id, 10)}, ${expiresAt.toISOString()})`;
     }
 
-    return  game.game_name;
+    const gameName: string = game.game_name
+
+    return  gameName ;
 
   } catch (error) {
     console.error(error);
@@ -41,3 +43,4 @@ export default defineEventHandler(async (event) => {
     client.release();
   }
 });
+ 

@@ -1,7 +1,7 @@
 <template>
   <div>
 
-    <JoinGame />
+    <JoinGame v-if="isJoinGameModalActive"/>
     
     <div class="flex flex-col justify-center items-center py-20">
 
@@ -39,26 +39,29 @@
 </template>
 
 <script setup>
-import ItemTracker from '~/components/ItemTracker.vue'
-import Counters from '~/components/Counters.vue'
-import ClassDropdwon from '~/components/ClassDropdwon.vue'
-import JoinGame from '~/components/JoinGame.vue'
-import StatBar from '~/components/StatBar.vue'
 definePageMeta({ layout: 'user' })
 const router = useRouter()
 const route = useRoute()
 
+const gameStore = useGameStore()
+const { isNameSet, clearGameStore } = gameStore
+const { gameName } = storeToRefs(gameStore)
+
 const dropDownActive = ref(false)
+const isJoinGameModalActive = ref(true)
 
 const leaveGame = () => {
-  localStorage.clear
-  router.push(`/user-${route.params.username}/current-game-${'no-game-session'}`)
+  clearGameStore()
+  router.push(`/user-${route.params.username}/${gameName.value}`)
 }
 
 
 const toggleSettings = () => {
-  dropDownActive.value = !dropDownActive.value
+  dropDownActive.value = !dropDownActive.value;
 }
+onBeforeMount(() => {
+  isJoinGameModalActive.value = !isNameSet()
+})
 </script>
 
 <style>

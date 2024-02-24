@@ -19,14 +19,15 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-
-import {  } from 'nuxt/app';
+import { storeToRefs } from "pinia";
+import { useGameStore } from '~/stores/game'
 
 const menuActive = ref(false);
 const menu = ref(null);
 const menuButton = ref(null);
 
-const routeState = useState('gamename')
+const gameStore = useGameStore()
+const { gameName } = storeToRefs(gameStore)
 
 const router = useRouter()
 const route = useRoute()
@@ -34,7 +35,7 @@ const route = useRoute()
 const nav = reactive([
   {label: "Profile", onClick: () => router.push(`/user-${route.params.username}/profile`)},
   {label: "Games", onClick: () => router.push(`/user-${route.params.username}/games`)},
-  {label: "Current Game", onClick: () => router.push(`/user-${route.params.username}/current-game-${routeState.value? routeState.value : 'no-game-session'}`)},
+  {label: "Current Game", onClick: () => router.push(`/user-${route.params.username}/${gameName.value}`)},
 ])
 
 async function logOut() {
@@ -59,8 +60,6 @@ const handleClickOutside = (event) => {
 };
 const toggleMenu = () => {
   menuActive.value = !menuActive.value;
-
-  console.log("routerstate, gamename:",routeState.value)
 };
 const closeMenu = () => {
   if ( menuActive.value ) {
