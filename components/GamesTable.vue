@@ -8,7 +8,7 @@
         p-4 my-16 rounded-2xl"
         
       >
-        <JoinFromGames :name="joinData.name" :token="joinData.token" :isActive="joinData.isActive" />
+        <JoinFromGames v-if="joinData.isActive" :name="joinData.name" :token="joinData.token" :isActive="joinData.isActive" @close-modal="joinData.isActive= false"/>
 
         <div class="lg:w-full w-11/12 h-fit lg:overflow-auto overflow-x-scroll ">
           <table class="table-fixed lg:w-fit w-max" >
@@ -39,8 +39,6 @@
 <script setup>
 import JoinFromGames from './JoinFromGames.vue'
 
-const router = useRouter()
-
 const gamesArray = defineProps({
   games: Array
 })
@@ -52,15 +50,10 @@ const joinData = reactive({
 });
 
 const join = (name, token) => {
-  console.log("token clicked")
   joinData.name = name;
   joinData.token = token;
   joinData.isActive = true;
 }
-
-
-
-
 </script>
 
 <style>

@@ -6,14 +6,14 @@
         <div>
           <label for="gameName" class="block text-sm font-medium leading-6 text-gray-900">Game Name</label>
           <div class="mt-2">
-            <input v-model="gameName.v" type="text" required 
+            <input v-model="gameName" type="text" required 
               class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-1"
             />
           </div>
         </div>
 
         <div>
-          <AmberButton :type="submit" class="w-full" >Create New Game</AmberButton>
+          <AmberButton :type="'submit'" class="w-full" >Create New Game</AmberButton>
         </div>
 
       </form>
@@ -23,9 +23,9 @@
       </div>
     </div>
 
-    <GamesTable :games="gamesArray.games" />
+    <GamesTable :games="gamesArray" />
 
-    <AmberButton @click="getGames">Get Games</AmberButton>
+    <AmberButton @click="refresh()">Get Games</AmberButton>
   </div>
 </template>
 
@@ -35,57 +35,36 @@ import { reactive } from 'vue'
 import GamesTable from '~/components/GamesTable.vue'
 definePageMeta({ layout: 'user' })
 
-const gameName = reactive({
-  v: ''
-})
+const gameName = ref('')
+const gamesArray = ref([])
 const gameToken = reactive({
   show: false,
   token: 0
 })
 
-const gamesArray = reactive({
-  games: Array
-})
+const { pending: gamesPending, data: gamesData, error: gameError, refresh } = await useFetch('/api/games/get-games')
+if (!gamesPending.value) {
+  gamesArray.value = gamesData.value.games
+}
 
 async function createGame() {
-  const name = gameName.v
-  if (gameName.v.length > 0) {
-    const { data, error } = await useFetch('/api/games/create-game', {
+  const name = gameName.value
+  if (gameName.value.length > 0) {
+    const { data: createdData, error: createdError } = await useFetch('/api/games/create-game', {
       method: 'post',
       body: {
         gameName: name
       }
     });
-    if ( error.value ) {
-      console.log(error.value);
+    if ( createdError.value ) {
+      console.log(createdError.value);
     }
-    else if ( data ) {
+    else if ( createdData.value ) {
       gameToken.show = true;
-      gameToken.token = data.value.gameToken;
-      gameName.v = ''
-      getGames()
+      gameToken.token = createdData.value.gameToken;
+      gameName.value = ''
+      refresh()
     }
   }
 }
-
-async function getGames() {
-  const { data, error } = await useFetch('/api/games/get-games')
-  if (error.value) {
-    console.log(error.value)
-  } else if (data.value) {
-    gamesArray.games = data.value.games
-  }
-}
-
-watch(gameName.v, () => {
-  console.log(gameName.v)
-})
-
-onNuxtReady(() => {
-  getGames()
-})
 </script>
-
-<style>
-
-</style>
