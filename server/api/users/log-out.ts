@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
     await client.sql`DELETE FROM sessions WHERE session_token= ${token}`;
 
     deleteCookie(event, 'sessionToken')
+    deleteCookie(event, 'gameStore')
     event.context.session_token = null
     event.context.user = null
     return { success: true };
