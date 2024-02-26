@@ -40,8 +40,8 @@
 import JoinFromGames from './JoinFromGames.vue'
 
 const gamesArray = defineProps({
-  games: Array
-})
+  games: Array 
+});
 
 const joinData = reactive({
   name: "",
