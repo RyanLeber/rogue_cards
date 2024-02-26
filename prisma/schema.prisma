@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+model game_classes {
+  class_id Int     @id @default(autoincrement())
+  name     String? @db.VarChar(255)
+  health   Int?
+  energy   Int?
+  draw     Int?
+  cards    String? @db.VarChar(255)
+  relic    Json?
+  trump    Json?
+}
+
+model game_potions {
+  potion_id          Int     @id @default(autoincrement())
+  potion_name        String? @db.VarChar(255)
+  potion_description String? @db.VarChar(255)
+  gold               Int?
+}
+
+model game_relics {
+  relic_id          Int     @id @default(autoincrement())
+  relic_name        String? @db.VarChar(255)
+  relic_description String? @db.VarChar(255)
+}
+
+model game_trump_cards {
+  trump_id          Int     @id @default(autoincrement())
+  trump_name        String? @db.VarChar(255)
+  trump_description String? @db.VarChar(255)
+  energy            Int?
+}
+
+model games {
+  game_id       Int             @id @default(autoincrement())
+  game_name     String          @unique @db.VarChar(255)
+  game_token    Int
+  expires_at    DateTime        @db.Timestamptz(6)
+  created_at    DateTime?       @default(now()) @db.Timestamptz(6)
+  game_sessions game_sessions[]
+  user_games    user_games[]
+}
+
+model sessions {
+  session_id    Int      @id @default(autoincrement())
+  user_id       Int
+  session_token String   @unique @db.VarChar(255)
+  current_game  Int?
+  expires_at    DateTime @db.Timestamptz(6)
+  users         users    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user_games {
+  user_game_id Int       @id @default(autoincrement())
+  game_id      Int
+  user_id      Int
+  class_id     Int?
+  wins         Int?      @default(0)
+  tokens       Int?      @default(0)
+  losses       Int?      @default(0)
+  gold         Int?      @default(0)
+  max_health   Int?      @default(0)
+  energy       Int?      @default(0)
+  draw         Int?      @default(0)
+  relics       Int[]
+  trumps       Int[]
+  potions      Int[]
+  expires_at   DateTime  @db.Timestamptz(6)
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  games        games     @relation(fields: [game_id], references: [game_id], onDelete: NoAction, onUpdate: NoAction)
+  users        users     @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([user_id, game_id])
+}
+
+model users {
+  user_id       Int          @id @default(autoincrement())
+  username      String       @unique @db.VarChar(255)
+  password_hash String       @db.VarChar(255)
+  created_at    DateTime?    @default(now()) @db.Timestamptz(6)
+  sessions      sessions[]
+  user_games    user_games[]
+}
+
+model game_sessions {
+  game_session_id   Int       @id @default(autoincrement())
+  game_id           Int
+  players           Int[]
+  current_player    Int?
+  rounds            Int?
+  remaining_players Int[]
+  expires_at        DateTime  @db.Timestamptz(6)
+  created_at        DateTime? @default(now()) @db.Timestamptz(6)
+  games             games     @relation(fields: [game_id], references: [game_id], onDelete: NoAction, onUpdate: NoAction)
+}
