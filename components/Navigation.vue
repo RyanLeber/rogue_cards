@@ -18,9 +18,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import { storeToRefs } from "pinia";
-import { useGameStore } from '~/stores/game'
 
 const menuActive = ref(false);
 const menu = ref(null);
@@ -45,7 +42,6 @@ async function logOut() {
   if (error.value) {
     console.log(error)
   } else {
-    localStorage.clear()
     router.push('/')
   }
 }
@@ -72,7 +68,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('click', handleClickOutside);
 });
-
 
 </script>
 
