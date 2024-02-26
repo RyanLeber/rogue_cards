@@ -1,6 +1,6 @@
 <template>
   <div class="lg:w-1/2 w-11/12 h-fit flex flex-col items-center text-slate-700">
-    <div class="flex font-bold text-2xl flex-wrap justify-center">
+    <div class="flex font-bold text-2xl flex-wrap justify-center bg-slate-300 p-2 rounded-lg border-2 border-slate-500">
       <h1 class=" text-nowrap">Current Player:&nbsp;</h1>
       <h1 class=" text-nowrap">MegaMind</h1>
     </div>
