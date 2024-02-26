@@ -21,6 +21,8 @@ export default defineEventHandler(async (event) => {
     
     await client.sql`UPDATE user_games SET class_id= ${classId} WHERE game_id= ${parseInt(gameRows[0].game_id, 10)} AND user_id= ${parseInt(userSession.user_id, 10)}`;
 
+    return { status: "success" }
+
   } catch (error) {
     console.error(error);
     // Properly format the error response

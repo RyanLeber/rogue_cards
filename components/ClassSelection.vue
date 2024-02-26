@@ -26,7 +26,7 @@
           text-slate-700
         "
       >
-        <div class="font-bold text-2xl"><H1>Class: {{ heroClass.name }}</H1></div>
+        <div class="font-bold text-2xl"><h1>Class: {{ heroClass.name }}</h1></div>
         <div class="text-xl font font-medium"><span>Energy: {{ heroClass.energy }}</span></div>
         <div class="text-xl font font-medium"><span>Base Health: {{ heroClass.health }}</span></div>
         <div class="text-xl font font-medium"><span>Starting Draw: {{ heroClass.draw }}</span></div>
@@ -34,20 +34,20 @@
         <br>
         <div class="text-xl font font-medium"> 
           <h2 class="font-bold">Starting Relic:</h2>
-          <P>
+          <p>
             {{ heroClass.relic.name }}:
             {{ heroClass.relic.desc }}
-          </P>
+          </p>
         </div>
         <br>
         <div class="text-xl font font-medium"> 
           <h2 class="font-bold">Starting Trump:</h2>
           <h3>{{ heroClass.trump.name }} - Energy: {{ heroClass.trump.energy }}</h3>
-          <P>
+          <p>
             {{ heroClass.trump.desc }}
-          </P>
+          </p>
         </div>
-        <AmberButton @click="$emit('classSelected',heroClass.class_id)"
+        <AmberButton @click="setClass(heroClass.class_id)"
           class="relative left-1/3 my-2"
         >Select This Class</AmberButton>
       </div>
@@ -57,8 +57,31 @@
 </template>
 
 <script setup>
+const gameStore = useGameStore()
+const { gameToken } = storeToRefs(gameStore)
+const emits = defineEmits(['classSelected'])
 
-const props = defineProps({
-  classes: Array,
-});
+const { data: classes, error: classesError } = await useFetch('/api/current-game/select-class')
+if ( classesError.value ) console.log(classesError.value)
+
+const setClass = async (classId) => {
+  try {
+    const response = await $fetch('/api/current-game/set-class', {
+      method: 'POST',
+      body: {
+      classId : classId,
+      gameToken: gameToken.value
+      }
+    });
+    if (!response) {
+      throw new Error('Failed to set class.');
+    }
+
+    emits('classSelected')
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 </script>
