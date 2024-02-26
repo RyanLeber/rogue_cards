@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
     const userSession = sessionRows[0] 
 
     // Generate a secure token
-    const gameToken = generateSecureGameId();
+    const gameToken: number = generateSecureGameId();
     const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000); // Expires in 30 days
 
     // Store the session token in the database
@@ -42,7 +42,8 @@ export default defineEventHandler(async (event) => {
 
     await client.sql`INSERT INTO user_games (game_id, user_id, expires_at) VALUES (${parseInt(game.game_id, 10)}, ${parseInt(userSession.user_id, 10)}, ${expiresAt.toISOString()})`;
 
-    return { gameToken: gameToken, cookie: userToken }
+    return gameToken
+
   } catch (error) {
     console.error(error);
     // Format the error response appropriately for your front-end
