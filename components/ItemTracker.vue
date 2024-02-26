@@ -1,12 +1,13 @@
+ 
 <template>
   <div class="w-11/12 flex flex-col items-center">
 
-    <AmberButton @click="toggleDropDown('dropOne')"
+    <AmberButton @click="relicsDrop = !relicsDrop"
       class="lg:w-1/2 w-full my-1">
       Relics
     </AmberButton>
     <transition name="extend">
-      <div v-show="isActive.dropOne" 
+      <div v-show="relicsDrop" 
         class=" drop
         flex justify-center
         lg:w-1/2 w-full h-fit 
@@ -33,10 +34,10 @@
     </transition>
 
 
-    <AmberButton @click="toggleDropDown('dropTwo')"
+    <AmberButton @click="trumpsDrop = !trumpsDrop"
       class=" lg:w-1/2 w-full my-1">Trump Cards</AmberButton>
     <transition name="extend">
-      <div v-show="isActive.dropTwo" 
+      <div v-show="trumpsDrop" 
         class="drop
         flex justify-center
         lg:w-1/2 w-full h-fit 
@@ -66,13 +67,13 @@
     </transition>
 
 
-    <AmberButton @click="toggleDropDown('dropThree')"
+    <AmberButton @click="potionsDrop = !potionsDrop"
       class="lg:w-1/2 w-full my-1"
     >
       Potions
     </AmberButton>
     <transition name="extend">
-      <div v-show="isActive.dropThree" 
+      <div v-show="potionsDrop" 
         class="drop
         flex justify-center
         lg:w-1/2 w-full h-fit 
@@ -99,82 +100,24 @@
       </div>
     </transition>
 
-    <AmberButton class="my-2" @click="getRelics">Get Relics</AmberButton>
-    <AmberButton class="my-2" @click="getTrumps">Get Trumps</AmberButton>
-    <AmberButton class="my-2" @click="getPotions">Get Potions</AmberButton>
-
   </div>
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { useItemsStore } from '~/stores/items'
+const relicsDrop = ref(false)
+const trumpsDrop = ref(false)
+const potionsDrop = ref(false)
 
-const isActive = reactive({
-  dropOne: false,
-  dropTwo: false,
-  dropThree: false
+const itemsStore = useItemsStore();
+const { fetchItems } = itemsStore
+const { relics, trumps, potions } = storeToRefs(itemsStore)
+
+onNuxtReady(() => {
+  fetchItems()
 });
-function toggleDropDown(dropKey) {
-  isActive[dropKey] = !isActive[dropKey]
-}
-const relics = reactive([])
-const trumps = reactive([])
-const potions = reactive([])
-
-async function getRelics () {
-  const { data, error } = await useFetch('/api/current-game/get-relics', {
-    method: 'POST',
-    body: {
-      relicIds : [1,7,11,18]
-    }
-  })
-  if (error.value) {
-    console.log(error.value)
-  } else {
-    console.log(data.value.relics[0])
-    data.value.relics.forEach(relic => {
-        relics.push(relic);
-    });
-  }
-  console.log(relics)
-}
-async function getTrumps () {
-  const { data, error } = await useFetch('/api/current-game/get-trumps', {
-    method: 'POST',
-    body: {
-      trumpIds : [1,7,11,17]
-    }
-  })
-  if (error.value) {
-    console.log(error.value)
-  } else {
-    console.log(data.value.trumps)
-    data.value.trumps.forEach(trump => {
-        trumps.push(trump);
-    });
-  }
-  console.log(trumps)
-}
-async function getPotions () {
-  const { data, error } = await useFetch('/api/current-game/get-potions', {
-    method: 'POST',
-    body: {
-      potionIds : [1,3]
-    }
-  })
-  if (error.value) {
-    console.log(error.value)
-  } else {
-    console.log(data.value.potions)
-    data.value.potions.forEach(potion => {
-        potions.push(potion);
-    });
-  }
-  console.log(potions)
-}
-
 </script>
-
+ 
 <style scoped>
 
 .drop {
