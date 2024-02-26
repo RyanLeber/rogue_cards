@@ -15,12 +15,12 @@
 
         <div v-if="dropDownActive"
           class="dropdown rounded-b-md p-4 z-20 relative"
-
         >
+        
         <ul>
           <li class="my-2"><button @click="leaveGame" class="text-gray-200 hover:text-slate-600">Leave Game</button></li>
-          <li class="my-2"><button class="text-gray-200 hover:text-slate-600">Do a Thing</button></li>
-          <li class="my-2"><button class="text-gray-200 hover:text-slate-600">Do a Thing</button></li>
+          <li class="my-2"><button class="text-gray-200 hover:text-slate-600">Start Game</button></li>
+          <li class="my-2"><button class="text-gray-200 hover:text-slate-600">Set Rotation</button></li>
           <li class="my-2"><button class="text-gray-200 hover:text-slate-600">Do a Thing</button></li>
         </ul>
   
@@ -32,6 +32,7 @@
       <ClassDropdwon />
       <Counters />
       <ItemTracker />
+      <GameButtons />
 
     </div>
 
@@ -44,14 +45,14 @@ const router = useRouter()
 const route = useRoute()
 
 const gameStore = useGameStore()
-const { isNameSet, clearGameStore } = gameStore
+const { isGameSet, $reset } = gameStore
 const { gameName } = storeToRefs(gameStore)
 
 const dropDownActive = ref(false)
 const isJoinGameModalActive = ref(true)
 
 const leaveGame = () => {
-  clearGameStore()
+  $reset()
   router.push(`/user-${route.params.username}/${gameName.value}`)
 }
 
@@ -59,8 +60,8 @@ const leaveGame = () => {
 const toggleSettings = () => {
   dropDownActive.value = !dropDownActive.value;
 }
-onBeforeMount(() => {
-  isJoinGameModalActive.value = !isNameSet()
+onNuxtReady(() => {
+  isJoinGameModalActive.value = !isGameSet()
 })
 </script>
 
