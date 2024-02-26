@@ -10,7 +10,8 @@ export default defineEventHandler(async (event) => {
   
     try {
       const { rows } = await client.sql`SELECT * FROM game_relics WHERE relic_id= ANY(${relics})` 
-      return {relics : rows}
+      return rows
+
     } catch (error) {
       console.error(error);
       // Properly format the error response
