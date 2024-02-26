@@ -11,6 +11,10 @@ export default defineNuxtConfig({
 
   devtools: {
     enabled: true,
+
+    timeline: {
+      enabled: true
+    }
   },
 
   app: {
@@ -24,5 +28,5 @@ export default defineNuxtConfig({
     }
   },
 
-  modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt" ]
+  modules: ["@pinia/nuxt", "@pinia-plugin-persistedstate/nuxt", "@nuxtjs/tailwindcss"]
 })

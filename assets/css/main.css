@@ -2,12 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .btn-amber {
-    @apply flex w-fit justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm focus-visible:outline bg-amber-600 outline-amber-500 hover:bg-amber-500
-  }
-}
-
 :root {
   --foreground-rgb: 0, 0, 0;
 
