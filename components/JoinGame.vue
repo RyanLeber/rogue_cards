@@ -21,7 +21,7 @@
         <h2 class="text-xl text-center">Enter a game code to join a game or create a game from the games page.</h2>
         <form @submit.prevent="joinGame" class="flex py-4">
           <input v-model="form.token" type="text" required class="rounded-l-md pl-1" placeholder="Game Code">
-          <button class="btn-amber rounded-l-none">Join</button>
+          <AmberButton class="rounded-l-none">Join</AmberButton>
         </form>
 
       </div>
@@ -38,12 +38,12 @@ const form = reactive({
 });
 
 const gameStore = useGameStore()
-const { setName, setToken } = gameStore
+const { storeName, storeToken } = gameStore
 const { gameName } = storeToRefs(gameStore)
 
 const joinGame = async () => {
   try {
-    const response = await $fetch('/api/testing/join-test', {
+    const response = await $fetch('/api/current-game/join-game', {
       method: 'POST',
       body: {
         gameToken: Number(form.token),
@@ -53,8 +53,8 @@ const joinGame = async () => {
     if (!response) {
       throw new Error('Failed to join the game.');
     }
-    setName(response);
-    setToken(Number(form.token));
+    storeName(response);
+    storeToken(Number(form.token));
 
     // Redirect to the game's interface page
     router.push(`/user-${route.params.username}/${gameName.value}`);

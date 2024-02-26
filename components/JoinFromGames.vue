@@ -35,7 +35,7 @@ const router = useRouter()
 const route = useRoute()
 
 const gameStore = useGameStore()
-const { setName, setToken } = gameStore
+const { storeName, storeToken } = gameStore
 const { gameName } = storeToRefs(gameStore)
 
 const props = defineProps({
@@ -46,7 +46,7 @@ const props = defineProps({
 // Join game method
 const joinGame = async () => {
   try {
-    const response = await $fetch('/api/testing/join-test', {
+    const response = await $fetch('/api/current-game/join-game', {
       method: 'POST',
       body: {
         gameToken: props.token,
@@ -56,8 +56,8 @@ const joinGame = async () => {
     if (!response) {
       throw new Error('Failed to join the game.');
     }
-    setName(response);
-    setToken(props.token);
+    storeName(response);
+    storeToken(props.token);
 
     // Redirect to the game's interface page
     router.push(`/user-${route.params.username}/${gameName.value}`);
