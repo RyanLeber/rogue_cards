@@ -25,15 +25,31 @@ export default defineEventHandler(async (event) => {
     if (gameCount === 0) return Error('Invalid game code. Check your code for errors.');
 
     const game = gameRows[0];
+
+    const gameId: number = parseInt(game.game_id, 10)
+    const userId: number = parseInt(userSession.user_id, 10)
     
-    const { rowCount: userGamesCount } = await client.sql`SELECT * FROM user_games WHERE game_id= ${parseInt(game.game_id, 10)} AND user_id= ${parseInt(userSession.user_id, 10)}`;
+    const { rowCount: userGamesCount } = await client.sql`SELECT * FROM user_games WHERE game_id= ${gameId} AND user_id= ${userId}`;
     if (userGamesCount === 0) {
-      await client.sql`INSERT INTO user_games (game_id, user_id, expires_at) VALUES (${parseInt(game.game_id, 10)}, ${parseInt(userSession.user_id, 10)}, ${expiresAt.toISOString()})`;
+      await client.sql`INSERT INTO user_games (game_id, user_id, expires_at) VALUES (${gameId}, ${userId}, ${expiresAt.toISOString()})`;
     }
+
+    // const { rowCount: gameSessionCount } = await client.sql`SELECT * FROM game_session WHERE game_id= ${gameId}`;
+    // if ( gameSessionCount === 0 ) {
+
+    //   await client.sql`INSERT INTO game_session (game_id, players, current_player, rounds, expires_at)
+    //                     VALUES (${gameId}, ARRAY[${userId}], ${userId}, ${0}, ${expiresAt.toISOString()})`;
+    // } else {
+    //   await client.sql`
+    //                   UPDATE game_session
+    //                   SET players = array_append(players, ${userId})
+    //                   WHERE 
+    //                   `;
+    // }
 
     const gameName: string = game.game_name
 
-    return  gameName ;
+    return gameName;
 
   } catch (error) {
     console.error(error);
