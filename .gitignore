@@ -4,9 +4,10 @@ node_modules
 .nitro
 .cache
 .output
-
+.env
 dist
 .DS_Store
 .vercel
 .turbo
 *.tsbuildinfo
+tmp
