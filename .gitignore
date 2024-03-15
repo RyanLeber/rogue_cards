@@ -10,4 +10,3 @@ dist
 .vercel
 .turbo
 *.tsbuildinfo
-tmp
